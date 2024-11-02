@@ -7,8 +7,8 @@ class CodeCopletionDataset:
     def __init__(
         self,
         data_dir: str = "data/raw",
-        max_length: int = 500,
-        min_length: int = 10,
+        max_length: int = 150,
+        min_length: int = 20,
         seed: int = 42,
     ):
         """
@@ -100,3 +100,13 @@ class CodeCompletionDataLoader:
             return sample
         else:
             raise StopIteration
+
+
+def main():
+    dataset = CodeCopletionDataset()[:50]
+    dataloader = CodeCompletionDataLoader(dataset)
+    print(next(dataloader)[2])
+
+
+if __name__ == "__main__":
+    main() 
