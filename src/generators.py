@@ -10,14 +10,13 @@ MODELS = {
 
 TOKNIZERS = {name: AutoTokenizer.from_pretrained(model) for name, model in MODELS.items()}
 LOADED_MODELS = {name: AutoModelForCausalLM.from_pretrained(model) for name, model in MODELS.items()}
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 def process_with_model(model_name, prefix, suffix):
     model = LOADED_MODELS[model_name]
     tokenizer = TOKNIZERS[model_name]
     
     input_text = f"<fim_prefix>{prefix}<fim_suffix>{suffix}<fim_middle>"
-    inputs = tokenizer.encode(input_text, return_tensors="pt").to(DEVICE)
+    inputs = tokenizer.encode(input_text, return_tensors="pt")
     outputs = model.generate(inputs, max_new_tokens=50)
     
     completion = tokenizer.decode(outputs[0], skip_special_tokens=True)
