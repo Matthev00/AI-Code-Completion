@@ -84,3 +84,19 @@ class CodeCopletionDataset:
     def __getitem__(self, idx):
         return self.samples[idx]
 
+
+class CodeCompletionDataLoader:
+    def __init__(self, dataset):
+        self.dataset = dataset
+        self.idx = 0
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.idx < len(self.dataset):
+            sample = self.dataset[self.idx]
+            self.idx += 1
+            return sample
+        else:
+            raise StopIteration
