@@ -73,10 +73,9 @@ class CodeCopletionDataset:
     def _establish_num_samples(self, block_length):
         if block_length < self._max_length * 2:
             return 1
-        elif block_length < self._max_length * 4:
-            return 2
         else:
-            return 3
+            return 2
+   
 
     def __len__(self):
         return len(self.samples)
@@ -106,6 +105,7 @@ def main():
     dataset = CodeCopletionDataset()[:50]
     dataloader = CodeCompletionDataLoader(dataset)
     print(next(dataloader)[2])
+    print(len(dataset))
 
 
 if __name__ == "__main__":
