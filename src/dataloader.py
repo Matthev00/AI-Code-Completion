@@ -53,28 +53,30 @@ class CodeCopletionDataset:
         return "\n".join(code_block)
 
     def _generate_sample(self, code_block: str) -> tuple[str, str, str]:
-        start_prefix = random.randint(0, len(code_block) - self._max_length)
-        end_prefix = start_prefix + random.randint(self._min_length, self._max_length)
+        total_length = len(code_block)
+        middle_length = random.randint(self._min_length, self._max_length)
+        remaining_length = total_length - middle_length
 
-        start_middle = end_prefix
-        end_middle = start_middle + random.randint(self._min_length, self._max_length)
+        prefix_length = random.randint(self._min_length, remaining_length // 2)
+        suffix_length = remaining_length - prefix_length
 
-        start_suffix = end_middle
+        # Ensure suffix is not too long
+        if suffix_length > self._max_length:
+            suffix_length = self._max_length
 
-        prefix = code_block[:end_prefix]
-        middle = code_block[start_middle:end_middle]
-        suffix = code_block[start_suffix:]
+        prefix = code_block[:prefix_length]
+        middle = code_block[prefix_length:prefix_length + middle_length]
+        suffix = code_block[prefix_length + middle_length:prefix_length + middle_length + suffix_length]
 
         return prefix, middle, suffix
 
     def _establish_num_samples(self, block_length):
         if block_length < self._max_length * 2:
-            num_samples = 1
+            return 1
         elif block_length < self._max_length * 4:
-            num_samples = 2
-        elif block_length < self._max_length * 6:
-            num_samples = 3
-        return num_samples
+            return 2
+        else:
+            return 3
 
     def __len__(self):
         return len(self.samples)
@@ -82,8 +84,3 @@ class CodeCopletionDataset:
     def __getitem__(self, idx):
         return self.samples[idx]
 
-
-df = CodeCopletionDataset()
-
-print(len(df))
-print(df[3][0])
