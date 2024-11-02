@@ -1,0 +1,386 @@
+[
+    {
+        "prefix": "def create_effnetb2(num_of_class",
+        "middle": "es: int, device=\"cuda\"):\n\n    model_weights = to",
+        "suffix": "rchvision.models.EfficientNet_B2_Weights.DEFAULT\n    transforms = model_weights.transforms()\n    model = torchvision.models.efficientnet_b2(weights=mo",
+        "outputs": {
+            "starcoder": "s, num_of_layers, num_of_classes_per_layer, num_of_classes_per_layer_per_class, num_of_classes_per_layer_per_class_per_class,"
+        }
+    },
+    {
+        "prefix": "def create_effnetb2(num_of_classes: int, device=\"cuda\"):\n\n    model_weights = torchvision.models.EfficientNet_B2_Weights.DEFAULT\n    transforms =",
+        "middle": " model_weights.transforms()\n    model = torchvision.models.efficientnet_b2(weights=model_w",
+        "suffix": "eights).to(device) # noqa 5501\n\n    for param in model.features.parameters():\n        param.requires_grad = False\n\n    utils.set_seeds(42)\n\n    # # Se",
+        "outputs": {
+            "starcoder": " torchvision.transforms.Compose([\n        torchvision.transforms.Resize(224),\n        torchvision.transforms.CenterCrop(224),\n        torchvision.transforms.ToTensor(),\n        torchvision.transforms.Normalize([0.485,"
+        }
+    },
+    {
+        "prefix": "def create_resnet50(num_of_classes: int, device=\"cuda\"):\n\n    model_weights = torchvision.m",
+        "middle": "odels.ResNet50_Weights.DEFAULT\n    transforms = model_weights.transforms()\n  ",
+        "suffix": "  model = torchvision.models.resnet50(weights=model_weights).to(device)\n\n    # # Freeze layers\n    layers = [model.layer1, model.layer2,\n             ",
+        "outputs": {
+            "starcoder": "odels.resnet50(pretrained=True).to(device)\n\n    # Freeze layers\n    layers = [model.layer1, model.layer2,\n              model.layer3, model.layer4,\n              model.layer5"
+        }
+    },
+    {
+        "prefix": "def create_resnet50(num_of_classes: int, device=\"cuda\"):\n\n    model_weights = torchvision.models.ResNet50_Weights.DEFAULT\n    transforms = model_weights.transforms()\n    model = torchvision.models.resnet50(weights=model_weights).to(device)\n\n    # # Freeze layers\n    layers = [model.layer1, model.la",
+        "middle": "yer2,\n              model.layer3, model.layer4",
+        "suffix": "]\n    for layer in layers:\n        layer.requires_grad_(False)\n    model.conv1.requires_grad_(False)\n\n    utils.set_seeds(42)\n\n    # # Set cllasifier ",
+        "outputs": {
+            "starcoder": "yer2, model.layer3, model.layer4]\n    for layer in layers:\n        layer.requires_grad_(False)\n    model.fc.requires_grad_(False)\n\n    utils.set_seeds(42)\n\n   "
+        }
+    },
+    {
+        "prefix": "def create_effnetb0(out_features,\n                    device):\n    effnetb0_weights = torchvision.models.EfficientNet_B0_Weights.DEFAULT\n    transforms = effnetb0_weights.transforms()\n    model = torchvision.models.efficientnet_b0(weights=effnetb0_weights).to(device) # noqa 5501\n\n    for param in model.features.parameter",
+        "middle": "s():\n        param.requires_grad = False\n\n",
+        "suffix": "    utils.set_seeds(42)\n\n    # # Set cllasifier to suit problem\n    model.classifier = nn.Sequential(\n        nn.Dropout(p=0.2, inplace=True),\n       ",
+        "outputs": {
+            "starcoder": "s():\n        param.requires_grad = False\n\n    model.classifier = nn.Sequential(\n        nn.Dropout(p=0.2, inplace=True),\n        nn.Linear(in_features=out_features, out_features"
+        }
+    },
+    {
+        "prefix": "def create_effnetb0(out_features,\n  ",
+        "middle": "                  device):\n    effnetb0_weights = torchvision.models.EfficientNet_B0_Weights.DEFAULT\n    transforms = effnetb0_w",
+        "suffix": "eights.transforms()\n    model = torchvision.models.efficientnet_b0(weights=effnetb0_weights).to(device) # noqa 5501\n\n    for param in model.features.p",
+        "outputs": {
+            "starcoder": "                      effnetb0_weights, device):\n    effnetb0_weights = effnetb0_w"
+        }
+    },
+    {
+        "prefix": "def save_model(model: torch.nn.Module,\n    ",
+        "middle": "           target_dir: str,",
+        "suffix": "\n               model_name: str):\n    target_dir_path = Path(target_dir)\n    target_dir_path.mkdir(parents=True, exist_ok=True)\n\n    model_save_path =",
+        "outputs": {
+            "starcoder": "    target_dir: str,"
+        }
+    },
+    {
+        "prefix": "def save_model(model: torch.nn.Module,\n          ",
+        "middle": "     target_dir: str,\n               model_name: str):\n    target_dir_path ",
+        "suffix": "= Path(target_dir)\n    target_dir_path.mkdir(parents=True, exist_ok=True)\n\n    model_save_path = target_dir_path / model_name\n\n    torch.save(obj=mode",
+        "outputs": {
+            "starcoder": "  target_dir: Path,\n            model_name: str):\n    \"\"\"\n    Save the model to a file.\n    \"\"\"\n    obj = {\n       'model_name': model_name,\n       'model_state_dict': model."
+        }
+    },
+    {
+        "prefix": "def set_seeds(seed: int = 42)",
+        "middle": ":\n\n    # Set the seed for general torch operations\n    torch.manual_seed(seed)\n    # Set the seed for CUDA torch operations (ones that happen on the ",
+        "suffix": "GPU)\n    torch.cuda.manual_seed(seed)",
+        "outputs": {
+            "starcoder": ":\n    torch.manual_seed(seed)\n    torch.cuda.manual_seed_all("
+        }
+    },
+    {
+        "prefix": "def parse_arguments():\n    \"\"\"\n    Parse arguments:\n    - batch size\n    - hidden units\n    - learning rate as lr\n    - num of epochs\n    \"\"\"\n    parser = argparse.ArgumentParser(description='Script train model TinyVGG')\n    parser.add_argument('--batch_size', type=int, default=32,\n                        ",
+        "middle": "help='Batch size for train",
+        "suffix": "ing and testing')\n    parser.add_argument('--hidden_units', type=int, default=10,\n                        help='Number of hidden units in the model')\n",
+        "outputs": {
+            "starcoder": " help='Batch size')\n    parser.add_argument('--hidden_units', type=int, default=10,\n                        help='Number of hidden units in the model')\n    parser.add_argument('--learning_rate', type=float"
+        }
+    },
+    {
+        "prefix": "def parse_arguments():\n    \"\"\"\n    Parse arguments:\n    - batch size\n    - hidden units\n    - learning rate as lr\n    - num of epochs\n    \"\"\"\n    parser = argparse.ArgumentParser(description='Script train model TinyVGG')\n    parser.add_argument('--batch_size', type=int, default=32,\n                        help='Batch size for training and testing')\n ",
+        "middle": "   parser.add_argument('--hidden_units', type=int, default=10,\n       ",
+        "suffix": "                 help='Number of hidden units in the model')\n    parser.add_argument('--lr', type=float, default=0.001,\n                        help='",
+        "outputs": {
+            "starcoder": "   parser.add_argument('--hidden_units', type=int, default=1024,\n                        help='Number of hidden units in the model')\n    parser.add_argument('--learning_rate', type=float, default="
+        }
+    },
+    {
+        "prefix": "def pred_and_store(paths: List[Path],\n                   model: torch.nn.Module,\n                   transform: torchvision.transform",
+        "middle": "s,\n                   class_names: List[str],\n                   device=\"cuda\"):\n\n    pred_list = []\n    for path in tqdm(paths",
+        "suffix": "):\n        pred_dict = {}\n        pred_dict[\"image_path\"] = path\n        class_name = path.parent.stem\n        pred_dict[\"class_name\"] = class_name\n\n ",
+        "outputs": {
+            "starcoder": "):\n        pred_dict = {}\n        pred_dict[\"image_path\"] = path\n        class_name = path.parent.stem\n        pred_dict[\"class_name\"] = class_name\n\n.Compose,\n                   target_transform: torchvision.transform.Compose,\n                   target_target_transform: torchvision.transform.Compose,\n                   target_target_target_transform: torchvision.transform.Compose,\n                   target_target_target_target"
+        }
+    },
+    {
+        "prefix": "def pred_and_store(paths: List[Path],\n                   model: torch.nn.Module,\n                   transform: torchvision.transforms,\n                   class_names: List[str],\n                   device=\"cuda\"):\n\n    pred_list = []\n    for path in tqdm(paths):\n        pred_dict = {}\n        pred_dict[\"image_path\"] = pa",
+        "middle": "th\n        class_name = path.parent.stem\n        pred_dict[\"class_name\"] = class_name\n\n        start_time = timer()\n\n        img = Ima",
+        "suffix": "ge.open(path)\n\n        transformed_img = transform(img).unsqueeze(0).to(device)\n\n        model.to(device)\n        model.eval()\n\n        with torch.inf",
+        "outputs": {
+            "starcoder": "th\n        pred_dict[\"class_name\"] = class_names\n        pred_dict[\"pred\"] = model(transformed_img)\n        pred_list.append(pred_dict)\n\n    return pred_list\n\n\ndef pred_and"
+        }
+    },
+    {
+        "prefix": "def predict(img: Image,",
+        "middle": "\n            model: torch.nn.Module,\n            transform: torchvision.transforms,\n       ",
+        "suffix": "     class_names: List[str],\n            device=\"cuda\"):\n\n    start_time = timer()\n\n    transformed_img = transform(img).unsqueeze(0).to(device)\n\n    ",
+        "outputs": {
+            "starcoder": " img_path: str, model: nn.Module, device=\"cuda\"):\n\n    img = img.to(device)\n\n    with torch.no_grad():\n        output = model(img)\n\n    return output.cpu().numpy()\n\n\n"
+        }
+    },
+    {
+        "prefix": "def predict(img: Image,\n            model: torch.nn.Module,\n            transform: torchvision.transforms,\n            class_names: List[str],\n            device=\"cuda\"):\n\n    start_time = timer()\n\n    transformed_img = transform(img).u",
+        "middle": "nsqueeze(0).to(device)\n\n    model.to(device)\n    model.eval(",
+        "suffix": ")\n\n    with torch.inference_mode():\n        pred_logit = model(transformed_img)\n        pred_prob = torch.softmax(input=pred_logit, dim=1)\n\n    pred_l",
+        "outputs": {
+            "starcoder": "nit_transform("
+        }
+    },
+    {
+        "prefix": "def create_writer(experiment_name: str,\n                  model_name: str,\n                  extra: str = None) -> SummaryWriter:\n    \"\"\"\n    Creates a torch.util",
+        "middle": "s.tensorboard.writer.SummaryWriter() instance saving to a specific log_dir. # noqa 5501\n    log_dir is a co",
+        "suffix": "mbination of runs/timestamp/experiment_name/model_name/extra. # noqa 5501\n    Where timestamp is the current date in YYYY-MM-DD format.\n\n    Args:\n   ",
+        "outputs": {
+            "starcoder": "s.SummaryWriter for the given experiment_name and model_name.\n\n    Args:\n    experiment_name: The name of the experiment.\n    model_name: The name of the model.\n    extra: A string to be appended to the"
+        }
+    },
+    {
+        "prefix": "def create_writer(experiment_name: str,\n                  model_name: str,\n                  extra: str = None) -> SummaryWriter:\n",
+        "middle": "    \"\"\"\n    Creates a torch.utils.tensorboard.writer.Summar",
+        "suffix": "yWriter() instance saving to a specific log_dir. # noqa 5501\n    log_dir is a combination of runs/timestamp/experiment_name/model_name/extra. # noqa 5",
+        "outputs": {
+            "starcoder": "    \"\"\"\n    Creates a summary writer for a given experiment_name and model_name.\n    :param experiment_name: The name of the experiment.\n    :param model_name: The name of the model.\n    :param extra: A"
+        }
+    },
+    {
+        "prefix": "def plot_loss_curves(results):\n    \"\"\"Plots training curves of a results",
+        "middle": " dictionary.\n\n    Args:\n        results (dict): dictionary containing list of values, e.g.\n            {\"t",
+        "suffix": "rain_loss\": [...],\n             \"train_acc\": [...],\n             \"test_loss\": [...],\n             \"test_acc\": [...]}\n    \"\"\"\n    loss = results[\"train",
+        "outputs": {
+            "starcoder": "s.\"\"\"\n    fig, ax = plt.subplots(1, 1)\n    ax.plot(results[\"train_loss\"], label=\"train_loss\")\n    ax.plot(results[\"t"
+        }
+    },
+    {
+        "prefix": "def plot_loss_curves(results):\n    \"\"\"Plots training curves of a results dictionary.\n\n    Args:\n        results (dict): dictionary containing list of values, e.g.\n            {\"train_loss\": [...],\n             \"tra",
+        "middle": "in_acc\": [...],\n             \"test_loss\": [",
+        "suffix": "...],\n             \"test_acc\": [...]}\n    \"\"\"\n    loss = results[\"train_loss\"]\n    test_loss = results[\"test_loss\"]\n\n    accuracy = results[\"train_acc",
+        "outputs": {
+            "starcoder": "in_acc\": [...],\n             \"test_loss\": [...]}\n    \"\"\"\n    loss = results[\"train_loss\"]\n    test_loss = results[\"test_loss\"]\n\n    accuracy = results[\"train_acc\"]\n    test_acc ="
+        }
+    },
+    {
+        "prefix": "def pred_and_plot_image(model: nn.Module,\n                        image_path: str,\n                        class_names: List[str],\n                        image_size: Tuple[int, int] = (224, 224),\n                        transform: torchvision.transforms = None,\n                        device: torch.device = \"cuda\"):\n    # Open an image\n    img = Image.open(image_path)\n\n    # Create t",
+        "middle": "ransformation\n    if transform:\n        imag",
+        "suffix": "e_transform = transform\n    else:\n        image_transform = transforms.Compose([\n            transforms.Resize(image_size),\n            transforms.ToT",
+        "outputs": {
+            "starcoder": "he target tensor\n    target = torch.zeros(1, 1, 3, 3).to(device)\n\n    # Get the image size\n    image_size = image_size\n\n    # Get the transform\n    transform = transform if transform"
+        }
+    },
+    {
+        "prefix": "def pred_and_plot_image(model: nn.Module,\n                        image_path: str,\n                        class_names: List[str],\n                        image_size: Tuple[int, int] = (224, 224),\n                        transform: torchvision.transforms = None,\n                        dev",
+        "middle": "ice: torch.device = \"cuda\"):\n    # Open an image\n    img = Image.open(image_path)\n\n    # Create transformati",
+        "suffix": "on\n    if transform:\n        image_transform = transform\n    else:\n        image_transform = transforms.Compose([\n            transforms.Resize(image_",
+        "outputs": {
+            "starcoder": "l_transform: torchvision.transforms = None,\n                        **kwargs):\n    \"\"\"\n    Predict the class of an image using a trained deep learning model.\n\n    Args:\n        model: The trained deep learning model.\n        image_path: The path to"
+        }
+    },
+    {
+        "prefix": "def download_data(data_path: Path,\n                  train_transform: transforms = None,\n                  test_transform: transforms = None):\n\n    train_data = datasets.OxfordIIITPet(root=data_path,\n                                        split=\"trainval",
+        "middle": "\",\n                            ",
+        "suffix": "            target_types=\"category\",\n                                        transform=train_transform,\n                                        downlo",
+        "outputs": {
+            "starcoder": "\",\n                                        transform=train_transform,\n                                        downloaddir=data_path,\n                                        target_types=\"category\",\n                                        transform=test_transform,\n                                        downloaddir=data_path,\n                                        target_types=\"category\",\n                                        transform="
+        }
+    },
+    {
+        "prefix": "def download_data(data_path: Path,\n                  train_transform: transforms = None,\n                  test_transform: transforms = None):\n\n    train_data = datasets.OxfordIIITPet(root=data_path,\n             ",
+        "middle": "                           split=\"trainval\",\n      ",
+        "suffix": "                                  target_types=\"category\",\n                                        transform=train_transform,\n                        ",
+        "outputs": {
+            "starcoder": "                          train=True,\n  "
+        }
+    },
+    {
+        "prefix": "def split_data(dataset: datasets,\n               split: float = 0.2):\n\n    length1 = int(split ",
+        "middle": "* len(dataset))\n    length2 = len(datase",
+        "suffix": "t) - length1\n\n    set_seeds(42)\n\n    random_split1, random_split2 = random_split(\n        dataset=dataset,\n        lengths=[length1, length2],\n       ",
+        "outputs": {
+            "starcoder": "/ 1)\n    length2 = int(split / 2)\n\n    length1 = length1 - length1\n    length2 = length2 - length2\n\n    length1 = length1 - length1\n    length2 = length2 -"
+        }
+    },
+    {
+        "prefix": "def split_data(dataset: datasets,\n               split: float = 0.2):\n\n    length1 = int(spli",
+        "middle": "t * len(dataset))\n    length2 = len(dataset) - length1\n\n    set_seeds(42)\n\n    random_split1, random_split2 = ra",
+        "suffix": "ndom_split(\n        dataset=dataset,\n        lengths=[length1, length2],\n        generator=torch.manual_seed(42))\n\n    return random_split1, random_sp",
+        "outputs": {
+            "starcoder": "t(dataset.data.shape[0] * split))\n    length2 = int(split(dataset.data.shape[0] * (1 - split)))\n\n    random_split1 = dataset.data[:length1]"
+        }
+    },
+    {
+        "prefix": "def create_dataloaders(\n    train_dir: str,\n    test_dir: str,\n    transform: transforms.Co",
+        "middle": "mpose,\n    batch_size: int,\n    num_workers: int\n):\n    \"\"\"\n    Creat",
+        "suffix": "es training and testing DataLoaders.\n\n    Takes in a training directory and testing directory path and turns\n    them into PyTorch Datasets and then i",
+        "outputs": {
+            "starcoder": "nform,\n    batch_size: int,\n    num_workers: int,\n) -> Tuple[torch.utils.data.DataLoader, torch.utils.data.DataLoader]:\n    \"\"\"\n    Creates dataloaders for training and testing Data"
+        }
+    },
+    {
+        "prefix": "def create_dataloaders(\n    train_dir: str,\n    test_dir: str,\n    transform: transforms.Compose,\n    batch_size: int,\n    num_workers: int\n):\n    \"\"\"\n    Creates training and testing DataLoaders.\n\n    Takes in a training directory and testing directory path and turns\n    them into PyTorch Datasets and then into PyTorch DataLoaders.\n\n    Args:\n        train_dir: Path to training directory.\n        test_dir: Path to testing directory.\n        transform: torchvision transforms to perform on training and testing data. # noqa 5501\n        batch_size: Number of samples per batch in each of the DataLoaders.\n        num_workers: An integer for number of workers per DataLoader.\n\n    Returns:\n    ",
+        "middle": "    A tuple of (train_dataloade",
+        "suffix": "r, test_dataloader, class_names).\n        Where class_names is a list of the target classes.\n    \"\"\"\n\n    # Create datasets using datasets.ImageFolder",
+        "outputs": {
+            "starcoder": "    A PyTorch DataLoaders.\n    \"\"\"\n\n    # Create datasets using datasets.ImageFolder\n    train_dataset = datasets.ImageFolder(\n        train_dir, transform=transform, target_transform=transform\n    )\n    test_dataset = datasets"
+        }
+    },
+    {
+        "prefix": "def main():\n\n    ssl._create_default_https_context = ssl._create_unverified_context # noqa 5501\n    transform = transforms.Compose([transforms.ToTensor(),\n             ",
+        "middle": "                       transforms.Resize((224, 224))])\n    train_data, test_da",
+        "suffix": "ta = download_data(data_path=Path(\"data\"),\n                                          train_transform=transform,\n                                      ",
+        "outputs": {
+            "starcoder": "   transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])\n\n    data_path = Path(\"data\")\n    train_data = download"
+        }
+    },
+    {
+        "prefix": "def main():\n\n    ssl._create_default_https_context = ssl._create_unverified_context # noqa 5501\n    transform = transforms.Compose([transfo",
+        "middle": "rms.ToTensor(),\n                        ",
+        "suffix": "            transforms.Resize((224, 224))])\n    train_data, test_data = download_data(data_path=Path(\"data\"),\n                                        ",
+        "outputs": {
+            "starcoder": "r.ToTensor(),\n"
+        }
+    },
+    {
+        "prefix": "def train_step(model: torch.nn.Module,\n               dataloader: torch.utils.data.DataLoader,\n               loss_fn: torch.nn.Module,\n               optimizer: torch.optim.Optimizer,\n               device: torch.device = \"cuda\") -> Tuple[float, float]:\n    \"\"\"Trains a model for single epoch\n\n    Args:\n        model (torch.nn.Module): model to be trained\n        dataloader (torch.utils.data.DataLoader): d",
+        "middle": "ataloader to be trained on\n        loss_fn (t",
+        "suffix": "orch.nn.Module): loss function\n        optimizer (torch.optim.Optimizer): optimizer\n        device (torch.device, optional): torch device. Defaults to",
+        "outputs": {
+            "starcoder": "ata loader\n        loss_fn (t \"cuda\"\n\n    Returns:\n        float: loss value"
+        }
+    },
+    {
+        "prefix": "def train_step(model: torch.nn.Module,\n               dataloader: torch.utils.data.DataLoader,\n               loss_fn: torch.nn.Module,\n               optimizer: torch.optim.Optimizer,\n               device: torch.device = \"cuda\") -> Tuple[float, float]:\n    \"\"\"Trains a model for single epoch\n\n    Args:\n        model (torch.nn.Module): model to be trained\n        dataloader (torch.utils.data.DataLoader): dataloader to be trained on\n        loss_fn (torch.nn.Module): loss function",
+        "middle": "\n        optimizer (torch.optim.Optimizer): optimizer\n        device (torch.device, optiona",
+        "suffix": "l): torch device. Defaults to \"cuda\".\n\n    Returns:\n        Tuple[flat, float]: training loss and training accuracy metrics.\n        In the form (trai",
+        "outputs": {
+            "starcoder": "\n        optimizer (torch.optim.Optimizer): optimizer to be trained\n        device (torch.device): device to be used for training\n\n    Returns:\n        Tuple[flat, float]: training loss and training accuracy metrics.\n        In the form (trai"
+        }
+    },
+    {
+        "prefix": "def test_step(model: torch.nn.Module,\n              dataloader: torch.utils.data.DataLoader,\n              loss_fn: torch.nn.Module,\n              device: torch.device = \"cuda\") -> Tuple",
+        "middle": "[float, float]:\n    \"\"\"Tests a model for single epoch\n\n    Args:\n        model (torch.nn.Module): model to be tes",
+        "suffix": "ted\n        dataloader (torch.utils.data.DataLoader): dataloader to be tested on\n        loss_fn (torch.nn.Module): loss function\n        device (torc",
+        "outputs": {
+            "starcoder": "\n            -> Tuple[torch.Tensor, torch.Tensor]:\n        \"\"\"\n        Test step function\n        \"\"\"\n        model.eval()\n        loss = loss_fn(model(dataloader.dataset.X, dataloader.dataset.y))\n        assert"
+        }
+    },
+    {
+        "prefix": "def test_step(model: torch.nn.Module,\n              dataloader: torch.utils.data.DataLoader,\n              loss_fn: torch.nn.Module,\n              device: torch.device = \"cuda\") -> Tuple[float, float]:\n    \"\"\"Tests a model for single epoch\n\n    Args:\n        model (torch.nn.Module): model to be tested\n        dataloader (torch.utils.data.DataLoader): dataloader to be tested on\n   ",
+        "middle": "     loss_fn (torch.nn.Module): loss function\n        device (torch.device, optional): torch device. Defaults to \"",
+        "suffix": "cuda\".\n\n    Returns:\n        Tuple[flat, float]: testing loss and testing accuracy metrics.\n        In the form (test_loss, test_accuracy). For exampl",
+        "outputs": {
+            "starcoder": "     loss_fn (torch.nn.Module): loss function to be tested\n        device (torch.device): device to be tested\n\n    Returns:\n        Tuple[flat, float]: testing loss and testing accuracy metrics.\n        In the form (test"
+        }
+    },
+    {
+        "prefix": "def train(model: torch.nn.Module,\n          train_dataloader: torch.utils.data.DataLoader,\n          test_dataloader: torch.utils.data.DataLoader,\n          optimizer: torch.optim.Optimizer,\n          loss_fn: torch.nn.Module,\n          epochs: int,\n          writer: SummaryWriter,\n          device=\"cuda\"):\n    \"\"\"\n    Trains and tests a PyTorch model.\n\n    Passes a target PyTorch models through train_step() and test_step()\n    functions for a number of epochs, training and testing the model\n    in the same epoch loop.\n\n    Calculates, prints and stores evaluation metrics throughout.\n\n    Args:\n        model: A PyTorch model to be trained and tested.\n        train_dataloader: A DataLoader instance for the model to be trained on.\n        test_dataloader: A DataLoader instance for the model to be tested on.\n        optimizer: A PyTorch optimizer to help minimize the loss function.\n        loss_fn: A PyTorch loss function to calculate loss on both datasets.\n        epochs: An integer indicating how many epochs to train for.\n        device: A target device to compute on (e.g. \"cuda\" or \"cpu\").\n\n    Returns:\n        A dictionary of training and testing loss as well as training and\n        testing accuracy metrics. Each metric has a value in a list for\n        each epoch.\n    \"\"\"\n\n    # Create empty results dictionary\n    results = {\"train_loss\": [],\n               \"train_acc",
+        "middle": "\": [],\n               \"test_loss\": [],\n               \"test_acc\": []\n    ",
+        "suffix": "           }\n\n    for epoch in tqdm(range(epochs)):\n        train_loss, train_acc = train_step(model=model,\n                                          ",
+        "outputs": {
+            "starcoder": "\": [],\n               \"test_loss\": [],\n               \"test_acc\": []}\n\n    # Iterate over the training data\n    for data in train_dataloader:\n        # Compute the loss\n        loss = loss_fn(model(data.to("
+        }
+    },
+    {
+        "prefix": "def train(model: torch.nn.Module,\n          train_dataloader: torch.utils.data.DataLoader,\n          test_dataloader: torch.utils.data.DataLoader,\n          optimizer: torch.optim.Optimizer,\n          loss_fn: torch.nn.Module,\n          epochs: int,\n          writer: SummaryWriter,\n          device=\"cuda\"):\n    \"\"\"\n    Trains and tests a PyTorch model.\n\n    Passes a target PyTorch models through train_step() and test_step()\n    functions for a number of epochs, training and testing the model\n    in the same epoch loop.\n\n    Calculates, prints and stores evaluation metrics throughout.\n\n    Args:\n        model: A PyTorch model to be trained and tested.\n        train_dataloader: A DataLoader instance for the model to be trained on.\n        test_dataloader: A DataLoader instance for the model to be tested on.\n        optimizer: A PyTorch optimizer to help minimize the loss function.\n        loss_fn: A PyTorch loss function to calculate loss on both datasets.\n        epochs: An integer indicating how many epochs to train for.\n        device: A target device to compute on (e.g. \"cuda\" or \"cpu\").\n\n    Returns:\n        A dictionary of training and testing loss as well as training and\n        testing accuracy metrics. Each metric has a value in a list for\n        each epoch.\n    \"\"\"\n\n    # Create empty results dictionary\n    results =",
+        "middle": " {\"train_loss\": [],\n               \"train_acc\": [],\n               \"test_loss\": [],\n    ",
+        "suffix": "           \"test_acc\": []\n               }\n\n    for epoch in tqdm(range(epochs)):\n        train_loss, train_acc = train_step(model=model,\n            ",
+        "outputs": {
+            "starcoder": " {\n            \"train_loss\": [],\n            \"train_acc\": []\n        }\n\n    for batch_idx, (data, target) in enumerate(train_dataloader):\n        # Move data to device\n        data, target = data.to("
+        }
+    },
+    {
+        "prefix": "def main():\n    args = utils.parse_arguments()\n    BATCH_SIZE = args.batch_size\n    EPOCHS = args.num_epochs # noqa 5501\n    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')\n    NUM_WORKERS = os.cpu_count()\n\n    # # Create models\n    effnetb2, effnetb2_transforms = model_builder.create_effnetb2(\n        num_of_classes=3,\n        device=device)\n    resnet50, resnet50_transforms = model_builder.create_resnet50(\n        num_of_classes=3,\n        device=device)\n\n    # # Create data 3 classes\n    data_path = Path(\"data_3\")\n    train_path = data_path / \"train\"\n    test_path = data_path / \"test\"\n    train_dataloader, test_dataloader, class_names = create_dataloaders(\n        train_dir=train_path,\n        test_dir=test_path,\n        transform=effnetb2_transforms,\n        batch_size=BATCH_SIZE,\n        num_workers=NUM_WORKERS)\n\n    # # # Train model\n    # optimizer = torch.optim.Adam(effnetb2.parameters(), lr=1e-2)\n    # loss_fn = nn.CrossEntropyLoss()\n    # result = engine.train(model=effnetb2,\n    #                       train_dataloader=train_dataloader,\n    #                       test_dataloader=test_dataloader,\n    #                       optimizer=optimizer,\n    #                       loss_fn=loss_fn,\n    #                       epochs=EPOCHS,\n    #                       writer=utils.create_writer(experiment_name=\"test\",\n    #                                                  model_name=\"xyz\"),\n    #                       device=device)\n\n    # utils.plot_loss_curves(results=result)\n\n    # # Load best model\n    best_model_path = \"models/Pretrained_resnet50_10_epochs.pth\"\n    resnet50.load_state_dict(torch.load(best_model_path))\n\n    model_size = Path(best_model_path).stat().st_size // (1024*1024)\n    # print(f\"Model size {model_size}\")\n\n    # # # Predict on image\n    # img_to_plot = 8\n    # test_image_path_list = list(Path(test_path).glob(\"*/*.jpg\"))\n    # img_path_sample = random.sample(population=test_image_path_list,\n    #                                 k=img_to_plot)\n    # for img_path in img_path_sample:\n    #     utils.pred_and_plot_image(model=resnet50,\n    #                               image_path=img_path,\n    #                               class_names=class_names,\n    #                               image_size=(288, 288))\n\n    # # Train model on all classes\n\n    # Create data (all classes)\n    # Create a model\n    model, test_transforms = model_builder.create_effnetb2(num_of_classes=37,\n                                                    ",
+        "middle": "       device=device)\n    train_transf",
+        "suffix": "orms = transforms.Compose([transforms.TrivialAugmentWide(),\n                                           test_transforms])\n\n    train_data, test_data = ",
+        "outputs": {
+            "starcoder": "     device=device)\n    test_transf create_dataloaders(\n        train_dir=train_path"
+        }
+    },
+    {
+        "prefix": "def main():\n    args = utils.parse_arguments()\n    BATCH_SIZE = args.batch_size\n    EPOCHS = args.num_epochs # noqa 5501\n    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')\n    NUM_WORKERS = os.cpu_count()\n\n    # # Create models\n    effnetb2, effnetb2_transforms = model_builder.create_effnetb2(\n        num_of_classes=3,\n        device=device)\n    resnet50, resnet50_transforms = model_builder.create_resnet50(\n        num_of_classes=3,\n        device=device)\n\n    # # Create data 3 classes\n    data_path = Path(\"data_3\")\n    train_path = data_path / \"train\"\n    test_path = data_path / \"test\"\n    train_dataloader, test_dataloader, class_names = create_dataloaders(\n        train_dir=train_path,\n        test_dir=test_path,\n        transform=effnetb2_transforms,\n        batch_size=BATCH_SIZE,\n        num_workers=NUM_WORKERS)\n\n    # # # Train model\n    # optimizer = torch.optim.Adam(effnetb2.parameters(), lr=1e-2)\n    # loss_fn = nn.CrossEntropyLoss()\n    # result = engine.train(model=effnetb2,\n    #                       train_dataloader=train_dataloader,\n    #                       test_dataloader=test_dataloader,\n    #                       optimizer=optimizer,\n    #                       loss_fn=loss_fn,\n    #                       epochs=EPOCHS,\n    #                       writer=utils.create_writer(experiment_name=\"test\",\n    #                                                  model_name=\"xyz\"),\n    #                       device=device)\n\n    # utils.plot_loss_curves(results=result)\n\n    # # Load best model\n    best_model_path = \"models/Pretrained_resnet50_10_epochs.pth\"\n    resnet50.load_state_dict(torch.load(best_model_path))\n\n    model_size = Path(best_model_path).stat().st_size // (1024*1024)\n    # print(f\"Model size {model_size}\")\n\n    # # # Predict on image\n    # img_to_plot = 8\n    # test_image_path_list = list(Path(test_path).glob(\"*/*.jpg\"))\n    # img_path_sample = random.sample(population=test_image_path_list,\n    #                                 k=img_to_plot)\n    # for img_path in img_path_sample:\n    #     utils.pred_and_plot_image(model=resnet50,\n    #                               image_path=img_path,\n    #                           ",
+        "middle": "    class_names=class_names,\n    #                             ",
+        "suffix": "  image_size=(288, 288))\n\n    # # Train model on all classes\n\n    # Create data (all classes)\n    # Create a model\n    model, test_transforms = model_",
+        "outputs": {
+            "starcoder": "                 "
+        }
+    },
+    {
+        "prefix": "    def predict(img: Image):\n\n        start = timer()\n\n      ",
+        "middle": "  transformed_img = test_transforms(img).unsqueeze(0).to(device)\n\n        model.to",
+        "suffix": "(device)\n        model.eval()\n\n        with torch.inference_mode():\n            pred_logit = model(transformed_img)\n            pred_prob = torch.soft",
+        "outputs": {
+            "starcoder": "  transformed_img = img.transform"
+        }
+    },
+    {
+        "prefix": "    def predict(img: Image):\n\n        start = timer()\n\n        transformed_img = test_transforms(img).unsqueeze(0).to",
+        "middle": "(device)\n\n        model.to(device)\n        model.eval()\n\n        with torch.inference_mode():\n            pred_logit = model(transformed_i",
+        "suffix": "mg)\n            pred_prob = torch.softmax(input=pred_logit,\n                                      dim=1)\n\n        pred_labels_and_probs = {class_names",
+        "outputs": {
+            "starcoder": "(device)\n\n        pred_logit = model(transformed_img)\n        pred_prob = torch.softmax(input=pred_logit,\n                                      dim=1)\n\n        end = timer()\n\n        print(f\"Time taken for {"
+        }
+    },
+    {
+        "prefix": "def main():\n    args = utils.parse_arguments()\n    BATCH_SIZE = args.batch_size\n    device = torch.device(\"cuda:0\" if torch.cuda.is_available() else \"cpu\")\n    NUM_WORKERS = os.cpu_count()\n    num_classes = 3\n    mlflow.set_experiment(\"Pet Recognition\")\n\n    # # Create models\n    effnetb2, effnetb2_transforms = create_effnetb2(\n        num_of_classes=num_classes, device=device\n    )\n    resnet50, resnet50_transforms = create_resnet50(\n        num_of_classes=num_classes, device=device\n    )\n    effnetb0, effnetb0_transforms = create_effnetb0(\n        out_features=num_classes, device=device\n    )\n\n    # # Create dataloaders\n    data_path = Path(\"data_3\")\n    train_path = data_path / \"train\"\n    test_path = data_path / \"test\"\n    (\n        train_dataloader_effnetb2,\n        test_dataloader_effnetb2,\n        class_names,\n    ) = create_dataloaders(\n        train_dir=train_path,\n        test_dir=test_path,\n        transform=effnetb2_transforms,\n        batch_size=BATCH_SIZE,\n        num_workers=NUM_WORKERS,\n    )\n\n    (\n        train_dataloader_effnetb0,\n        test_dataloader_effnetb0,\n        class_names,\n    ) = create_dataloaders(\n        train_dir=train_path,\n        test_dir=test_path,\n        transform=effnetb0_transforms,\n        batch_size=BATCH_SIZE,\n        num_workers=NUM_WORKERS,\n    )\n\n    (\n        train_dataloader_resnet50,\n        test_dataloader_resnet50,\n        class_names,\n    ) = create_dataloaders(\n        train_dir=train_path,\n        test_dir=test_path,\n        transform=resnet50_transforms,\n        batch_size=BATCH_SIZE,\n        num_workers=NUM_WORKERS,\n    )\n\n    # # Create experiment\n    epochs = [5, 10]\n    models = [\"resnet50\", \"effnetb0\", \"effnetb2\"]\n    experiment_num = 0\n\n    # # Experiment\n    for epoch in epochs:\n        for model_name in models:\n            experiment_num += 1\n            print(f\"[INFO] Experiment number: {experiment_num}\")\n          ",
+        "middle": "  print(f\"[INFO] Model: {model_name}\")\n            print(f\"[INFO] Number of epochs: {epoc",
+        "suffix": "h}\")\n\n            # Create model\n            if model_name == \"effnetb2\":\n                model, _ = create_effnetb2(num_of_classes=num_classes, devic",
+        "outputs": {
+            "starcoder": "  # Create model\n            if model_name == \"effnetb2\":\n                model, _ = create_effnetb2(num_of_classes=num_classes, devic"
+        }
+    },
+    {
+        "prefix": "def main():\n    args = utils.parse_arguments()\n    BATCH_SIZE = args.batch_size\n    device = torch.device(\"cuda:0\" if torch.cuda.is_available() else \"cpu\")\n    NUM_WORKERS = os.cpu_count()\n    num_classes = 3\n    mlflow.set_experiment(\"Pet Recognition\")\n\n    # # Create models\n    effnetb2, effnetb2_transforms = create_effnetb2(\n        num_of_classes=num_classes, device=device\n    )\n    resnet50, resnet50_transforms = create_resnet50(\n        num_of_classes=num_classes, device=device\n    )\n    effnetb0, effnetb0_transforms = create_effnetb0(\n        out_features=num_classes, device=device\n    )\n\n    # # Create dataloaders\n    data_path = Path(\"data_3\")\n    train_path = data_path / \"train\"\n    test_path = data_path / \"test\"\n    (\n        train_dataloader_effnetb2,\n        test_dataloader_effnetb2,\n        class_names,\n    ) = create_dataloaders(\n        train_dir=train_path,\n        test_dir=test_path,\n        transform=effnetb2_transforms,\n        batch_size=BATCH_SIZE,\n        num_workers=NUM_WORKERS,\n    )\n\n    (\n        train_dataloader_effnetb0,\n        test_dataloader_effnetb0,\n        class_names,\n    ) = create_dataloaders(\n        train_dir=train_path,\n        test_dir=test_path,\n        transform=effnetb0_transforms,\n        batch_size=BATCH_SIZE,\n        num_workers=NUM_WORKERS,\n    )\n\n    (\n        train_dataloader_resnet50,\n        test_dataloader_resnet50,\n        class_names,\n    ) = c",
+        "middle": "reate_dataloaders(\n        train_dir=train_path,\n        test_dir=test_path,",
+        "suffix": "\n        transform=resnet50_transforms,\n        batch_size=BATCH_SIZE,\n        num_workers=NUM_WORKERS,\n    )\n\n    # # Create experiment\n    epochs = ",
+        "outputs": {
+            "starcoder": "reate_dataloaders(\n        train_dir=train_path,\n        test_dir=test_path,\n        transform=resnet50_transforms,\n        batch_size=BATCH_SIZE,\n        num_workers=NUM_WORKERS"
+        }
+    },
+    {
+        "prefix": "def main():\n    device = torch.device(\"cuda:0\" if torch.cuda.is_available() e",
+        "middle": "lse \"cpu\")\n    # # Setup class names\n    with open(\"class_names.txt\", \"r\") as filehandle:\n        class",
+        "suffix": "_names = [bread.strip() for bread in filehandle.readlines()]\n\n    # # Create model\n    model, model_transforms = create_effnetb2(\n        num_of_class",
+        "outputs": {
+            "starcoder": "lse \"cpu\")\n    model.to(device)\n\n    # # Load model\n    # model = effnetb2.EffNetB2(num_of_class=2, num_of_layers=2, num_of_"
+        }
+    },
+    {
+        "prefix": "def main():\n    device = torch.device(\"cuda:0\" if to",
+        "middle": "rch.cuda.is_available() else \"cpu\")\n    # # Setup class names\n    with open(\"c",
+        "suffix": "lass_names.txt\", \"r\") as filehandle:\n        class_names = [bread.strip() for bread in filehandle.readlines()]\n\n    # # Create model\n    model, model_",
+        "outputs": {
+            "starcoder": "rch.cuda.is_available() else \"cpu\")\n    model.to(device)\n\n    # # Load model\n    # model.load_state_dict(torch.load(\"model.pth\"))\n\n    # # Load data\n    #"
+        }
+    },
+    {
+        "prefix": "    def predict(img: Image):\n        start = timer()\n\n        transformed_img = model_transforms(img).unsqueeze(0).to(devi",
+        "middle": "ce)\n\n        model.to(device)\n        model.eval()\n\n        with torch.inference_mode():\n           ",
+        "suffix": " pred_logit = model(transformed_img)\n            pred_prob = torch.softmax(input=pred_logit, dim=1)\n\n        pred_labels_and_probs = {\n            cla",
+        "outputs": {
+            "starcoder": "ze)\n        transformed_img = transformed_img.to(device)\n        pred_logit = model(transformed_img)\n        pred_prob = torch.softmax(input=pred_logit, dim=1)\n\n        pred_"
+        }
+    },
+    {
+        "prefix": "    def predict(img: Image):\n       ",
+        "middle": " start = timer()\n\n        transformed_img = model_transforms(img).unsqueeze(0).to(device",
+        "suffix": ")\n\n        model.to(device)\n        model.eval()\n\n        with torch.inference_mode():\n            pred_logit = model(transformed_img)\n            pre",
+        "outputs": {
+            "starcoder": "     transformed_img = transform(img)\n            transformed_img = torch.unsqueeze(transformed_img, 0)\n            transformed_img = transformed_img.to(device)\n            pred_logit = model(transformed_img"
+        }
+    },
+    {
+        "prefix": "def create_effnetb2(num_of_classes: int, device=\"cuda\"):\n\n    model_weights = torchvision.models.EfficientNet_B2_Weights.DEFAULT\n    transforms = model_weights.transforms()\n    mode",
+        "middle": "l = torchvision.models.efficientnet_b2(weights=model_weights).to(device) #",
+        "suffix": " noqa 5501\n\n    for param in model.features.parameters():\n        param.requires_grad = False\n\n    set_seeds(42)\n\n    # # Set cllasifier to suit probl",
+        "outputs": {
+            "starcoder": "l = transforms.Compose([transforms.Resize(224), transforms.CenterCrop(224), transforms.ToTensor(), transforms.Normalize([0.485, 0.456, 0.40"
+        }
+    },
+    {
+        "prefix": "def create_effnetb2(num_of_classes: int, device=\"cuda\"):\n\n    model_weights = torchvision.models.EfficientNet_B2_Weights.DEFAULT\n    transforms = model_weights.transforms()\n    model = torchvision.models.efficientnet_b2(weights=model_weights).to(device) # noqa 5501\n\n    for ",
+        "middle": "param in model.features.parameters():\n        param.requires_grad = False\n",
+        "suffix": "\n    set_seeds(42)\n\n    # # Set cllasifier to suit problem\n    model.classifier = nn.Sequential(\n        nn.Dropout(p=0.2, inplace=True),\n        nn.L",
+        "outputs": {
+            "starcoder": "num_of_classes in range(num_of_classes):\n        model.classifier.add_module(\n            \"classifier{}\".format(num_of_classes),\n            model.classifier[num_of_classes].to(device),"
+        }
+    },
+    {
+        "prefix": "def set_seeds(seed: int = 42):\n\n    # Se",
+        "middle": "t the seed for general torch operations\n    torch.manual_seed(seed)\n    # Set the seed for CUDA torch operations (ones th",
+        "suffix": "at happen on the GPU)\n    torch.cuda.manual_seed(seed)",
+        "outputs": {
+            "starcoder": "ttings\n    torch.manual_seed(seed)\n    torch.cuda.manual_seed_all(seed)\n\n    # GPU settings\n    torch.cuda.manual_seed_all(seed)\n    torch.cuda.manual_seed("
+        }
+    }
+]
