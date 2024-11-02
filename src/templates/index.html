@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Review</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Review</h1>
+    
+    <form method="post">
+        <div>
+            <h2>Original</h2>
+            <pre>{{ example.prefix }}<strong>{{ example.middle }}</strong>{{ example.suffix }}</pre>
+        </div>
+        
+        <div>
+            <h2>Generations</h2>
+            {% for model, output in models.items() %}
+                <h3>{{ model }}</h3>
+                <pre>{{ example.prefix }}<strong>{{ output }}</strong>{{ example.suffix }}</pre>
+                
+                <label>
+                    <input type="radio" name="rating_{{ loop.index }}" value="correct" required> correct
+                </label>
+                <label>
+                    <input type="radio" name="rating_{{ loop.index }}" value="partially_correct"> almost correct
+                </label>
+                <label>
+                    <input type="radio" name="rating_{{ loop.index }}" value="incorrect"> incorrect
+                </label>
+                <input type="hidden" name="model_{{ loop.index }}" value="{{ model }}">
+                <br>
+            {% endfor %}
+        </div>
+        
+        <input type="hidden" name="example_id" value="{{ example_id }}">
+        <button type="submit">save and move to next</button>
+    </form>
+</body>
+</html>
