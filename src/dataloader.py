@@ -65,8 +65,13 @@ class CodeCopletionDataset:
             suffix_length = self._max_length
 
         prefix = code_block[:prefix_length]
-        middle = code_block[prefix_length:prefix_length + middle_length]
-        suffix = code_block[prefix_length + middle_length:prefix_length + middle_length + suffix_length]
+        middle = code_block[prefix_length : prefix_length + middle_length]
+        suffix = code_block[
+            prefix_length
+            + middle_length : prefix_length
+            + middle_length
+            + suffix_length
+        ]
 
         return prefix, middle, suffix
 
@@ -75,7 +80,6 @@ class CodeCopletionDataset:
             return 1
         else:
             return 2
-   
 
     def __len__(self):
         return len(self.samples)
@@ -88,10 +92,10 @@ class CodeCompletionDataLoader:
     def __init__(self, dataset):
         self.dataset = dataset
         self.idx = 0
-    
+
     def __iter__(self):
         return self
-    
+
     def __next__(self):
         if self.idx < len(self.dataset):
             sample = self.dataset[self.idx]
@@ -109,4 +113,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main() 
+    main()

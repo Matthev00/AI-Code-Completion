@@ -32,6 +32,6 @@ def fetch_py_files(path=""):
 def main():
     fetch_py_files()
 
-    
+
 if __name__ == "__main__":
     main()

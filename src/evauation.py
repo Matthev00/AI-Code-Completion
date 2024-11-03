@@ -19,14 +19,14 @@ def calculate_metrics(generated: str, actual: str):
         "exact match": int(generated == actual),
         "bleu": sentence_bleu([actual.split()], generated.split()),
         "chrf": sentence_chrf(generated, actual),
-        "edit_distance": edit_distance(generated, actual)
+        "edit_distance": edit_distance(generated, actual),
     }
 
 
 def get_rating(example_id):
     for rating in RATINGS:
         if rating["example_id"] == example_id:
-            answear =  rating["rating"]
+            answear = rating["rating"]
             if answear == "correct":
                 return 2
             elif answear == "partially_correct":
@@ -35,12 +35,13 @@ def get_rating(example_id):
                 return 0
     return None
 
+
 def evaluate():
     for example_id, example in enumerate(EXAMPLES):
         prefix = example["prefix"]
         middle = example["middle"]
         suffix = example["suffix"]
-        
+
         for model_name, generated in example["outputs"].items():
             metrics = calculate_metrics(generated, middle)
 
@@ -58,4 +59,4 @@ def evaluate():
 
 
 if __name__ == "__main__":
-    evaluate()                
+    evaluate()
